@@ -457,7 +457,29 @@ body {
   </style>
 </head>
 <body>
+async function loadData() {
+  const url = "https://script.google.com/macros/s/XXXX/exec";
 
+  const res = await fetch(url);
+  const data = await res.json();
+
+  console.log(data);
+
+  // contoh tampilkan ke table
+  const tbody = document.getElementById("archiveTableBody");
+  tbody.innerHTML = "";
+
+  data.slice(1).forEach(row => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${row[0]}</td>
+        <td>${row[1]}</td>
+        <td>${row[2]}</td>
+        <td>${row[3]}</td>
+      </tr>
+    `;
+  });
+}
   <!-- LOGIN SECTION -->
   <div id="login-section">
   <div class="card login-card shadow">
