@@ -26,7 +26,7 @@ const ARSIP_HEADERS = [
 // SERVING HTML
 // ==========================================
 function doGet(e) {
-  return HtmlService.createTemplateFromFile('Index.html')
+  return HtmlService.createTemplateFromFile('index.html')
     .evaluate()
     .setTitle(APP_NAME)
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
@@ -43,7 +43,7 @@ function doGet(e) {
       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
 
-  return HtmlService.createHtmlOutputFromFile("Index");
+  return HtmlService.createHtmlOutputFromFile("index");
 }
 
 // ==========================================
@@ -287,7 +287,7 @@ function addArchive(formData) {
   let fileData = { id: "", url: "" };
   if (formData.fileData) {
     const originalName = formData.fileName;
-    const ext = originalName.substring(originalName.lastIndexOf("."));
+    const ext = originalName.substring(originalName.lastindexOf("."));
     const newFileName = formData.nama + ext;
     const folder = getOrCreateDivisionFolder(formData.divisi);
     fileData = uploadFileToDrive(formData.fileData, newFileName, folder.getId());
@@ -316,7 +316,7 @@ function editArchive(id, archive) {
       let fileData = { id: data[i][10], url: data[i][11] };
       if (archive.fileData) {
         try { DriveApp.getFileById(fileData.id).setTrashed(true); } catch(e){}
-        const ext = archive.fileName.substring(archive.fileName.lastIndexOf("."));
+        const ext = archive.fileName.substring(archive.fileName.lastindexOf("."));
         const newFileName = archive.nama + ext;
         const folder = getOrCreateDivisionFolder(archive.divisi);
         fileData = uploadFileToDrive(archive.fileData, newFileName, folder.getId());
@@ -375,7 +375,7 @@ function getCategories(filter) {
     }
 
     result.push({
-      rowIndex: i + 1,
+      rowindex: i + 1,
       divisi: row[0],
       kategori: row[1],
       retensiAktif: row[2],
@@ -393,17 +393,17 @@ function addCategory(data) {
   return { success: true };
 }
 
-function updateCategory(rowIndex, data) {
+function updateCategory(rowindex, data) {
   const ss = getOrCreateMainSpreadsheet();
   const sheet = ss.getSheetByName("KategoriArsip");
-  sheet.getRange(rowIndex, 1, 1, 5).setValues([[data.divisi, data.kategori, data.aktif, data.inaktif, data.keterangan]]);
+  sheet.getRange(rowindex, 1, 1, 5).setValues([[data.divisi, data.kategori, data.aktif, data.inaktif, data.keterangan]]);
   return { success: true };
 }
 
-function deleteCategory(rowIndex) {
+function deleteCategory(rowindex) {
   const ss = getOrCreateMainSpreadsheet();
   const sheet = ss.getSheetByName("KategoriArsip");
-  sheet.deleteRow(rowIndex);
+  sheet.deleteRow(rowindex);
   return { success: true };
 }
 
@@ -439,8 +439,8 @@ function getDashboardData(filter) {
     
     for (let i = 1; i < data.length; i++) {
       const row = data[i];
-      const div = row[1]; // Kolom Divisi (Index 1)
-      let date = row[5];  // Kolom Tanggal (Index 5)
+      const div = row[1]; // Kolom Divisi (index 1)
+      let date = row[5];  // Kolom Tanggal (index 5)
       
       // --- PERBAIKAN 1: Pastikan date adalah Object Date ---
       if (typeof date === 'string' || !(date instanceof Date)) {
@@ -521,7 +521,7 @@ function getUsers() {
   const result = [];
   for (let i = 1; i < data.length; i++) {
     result.push({
-      rowIndex: i + 1,
+      rowindex: i + 1,
       id: data[i][0],
       nama: data[i][1],
       username: data[i][2],
@@ -540,17 +540,17 @@ function addUser(data) {
   return { success: true };
 }
 
-function updateUser(rowIndex, data) {
+function updateUser(rowindex, data) {
   const ss = getOrCreateMainSpreadsheet();
   const sheet = ss.getSheetByName("Users");
-  sheet.getRange(rowIndex, 1, 1, 6).setValues([[data.id, data.nama, data.username, data.password, data.role, data.divisi]]);
+  sheet.getRange(rowindex, 1, 1, 6).setValues([[data.id, data.nama, data.username, data.password, data.role, data.divisi]]);
   return { success: true };
 }
 
-function deleteUser(rowIndex) {
+function deleteUser(rowindex) {
   const ss = getOrCreateMainSpreadsheet();
   const sheet = ss.getSheetByName("Users");
-  sheet.deleteRow(rowIndex);
+  sheet.deleteRow(rowindex);
   return { success: true };
 }
 
