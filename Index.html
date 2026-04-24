@@ -1,0 +1,2237 @@
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>LEMATANG
+  </title>
+    
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<button id="installBtn" class="btn btn-success d-none">
+  📲 Install Aplikasi
+</button>
+<script>
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBtn').classList.remove('d-none');
+});
+
+document.getElementById('installBtn').addEventListener('click', () => {
+  deferredPrompt.prompt();
+});
+</script>
+
+  <style>
+    :root {
+      --primary-color: #0a90cd;
+      --secondary-color: #1B5E20;
+      --bg-light: #F1F8E9;
+    }
+    
+/* ================= MOBILE OPTIMIZATION ================= */
+@media (max-width: 767.98px) {
+
+  /* Perkecil padding global */
+  .content-area {
+    padding: 10px !important;
+  }
+
+@media (max-width: 767px) {
+  table {
+    min-width: 700px;
+  }
+}
+
+@media (max-width: 576px) {
+  .login-card {
+    margin: 10px;
+    padding: 1.5rem;
+  }
+
+  .logo-circle {
+    width: 80px;
+    height: 80px;
+  }
+
+  .logo-sub img {
+    width: 80px;
+  }
+}
+
+  /* Card lebih compact */
+  .card {
+    border-radius: 12px;
+  }
+
+  /* Dashboard card */
+  .stat-card {
+    min-height: 90px;
+  }
+
+  .stat-card h3 {
+    font-size: 1.4rem;
+  }
+
+  .stat-card span {
+    font-size: 0.8rem;
+  }
+
+  /* Table jadi scroll horizontal */
+  .table-responsive {
+    font-size: 0.8rem;
+  }
+
+  /* Input & filter stack (vertikal) */
+  .card-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .card-header input,
+  .card-header select,
+  .card-header button {
+    width: 100% !important;
+    margin-bottom: 5px;
+  }
+
+  /* Tombol lebih nyaman ditekan */
+  .btn {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  /* Navbar mobile lebih clean */
+  .navbar-custom {
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  /* Sidebar profile lebih kecil */
+  .profile-card {
+    padding: 8px;
+  }
+
+  .profile-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .profile-name {
+    font-size: 0.85rem;
+  }
+
+  .profile-role {
+    font-size: 0.7rem;
+  }
+
+  /* Form input lebih rapat */
+  .form-control, .form-select {
+    font-size: 0.85rem;
+  }
+
+}
+
+.floating-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #0a90cd;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  font-size: 1.4rem;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  z-index: 1050;
+}
+
+.floating-btn:hover {
+  background: #1B5E20;
+}
+
+ /* Logo utama */
+.logo-circle {
+  width: 110px;
+  height: 110px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #fff;
+  padding: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 
+    0 8px 20px rgba(0,0,0,0.15),
+    0 0 15px rgba(10,144,205,0.3);
+
+  animation: float 3s ease-in-out infinite;
+}
+
+.logo-img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+}
+
+/* Logo kedua */
+.logo-sub img {
+  width: 110px;
+  opacity: 0.8;
+}
+
+/* Judul utama */
+.logo-title {
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #0a90cd;
+  margin-bottom: 5px;
+}
+
+/* Subjudul */
+.logo-subtitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0a90cd;
+  max-width: 300px;
+  margin: 10px auto 0;
+  line-height: 1.5;
+}
+
+.logo-instansi {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1B5E20;
+  margin-top: 5px;
+}
+
+/* Animasi */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+body {
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+    body { background-color: var(--bg-light); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    
+    .bg-primary-custom { background-color: var(--primary-color) !important; }
+    .text-primary-custom { color: var(--primary-color) !important; }
+    
+    /* Login Styles */
+    #login-section {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    }
+    .login-card { width: 100%; max-width: 400px; padding: 2rem; border-radius: 15px; background: white; }
+
+    .sidebar {
+      min-height: 100vh;
+      background-color: #0a90cd !important;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+      transition: all 0.3s;
+    }
+    .sidebar h5 { color: #ffffff !important; }
+    .sidebar small { color: #cccccc !important; }
+    .sidebar .nav-link {
+      color: #ffffff !important;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+      background-color: rgba(255, 255, 255, 0.2) !important;
+      font-weight: 600;
+    }
+    .sidebar .nav-link i { width: 25px; }
+
+    /* Status Badges */
+    .badge-Aktif { background-color: #198754; }
+    .badge-Inaktif { background-color: #fd7e14; }
+    .badge-Harus-Dimusnahkan { background-color: #dc3545; }
+    .badge-Permanen { background-color: #0d6efd; }
+
+    /* Drag & Drop Area */
+    #drop-area {
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    #drop-area.highlight { background-color: #e8f5e9; border-color: var(--primary-color); }
+    
+    /* Hide sections initially */
+    .app-section { display: none; }
+    .app-section.active { display: block; }
+    
+    .card { border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .card-header { background-color: white; border-bottom: 1px solid #eee; font-weight: 600; }
+
+    .btn-primary-custom { 
+      background-color:  #0a90cd !important; 
+      border-color: #0a90cd !important; 
+      color: white !important;
+    }
+    .btn-primary-custom:hover {
+      background-color: #1B5E20 !important;
+      border-color: #1B5E20 !important;
+    }
+
+    /* Dashboard Spacing */
+    .dashboard-section { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid #e0e0e0; }
+    .stat-card { min-height: 120px; display: flex; flex-direction: column; justify-content: center; }
+
+    /* Sidebar Fixed */
+    @media (min-width: 768px) {
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 16.666667%;
+        z-index: 1000;
+        overflow-y: auto;
+      }
+      .col-md-10.content-area { margin-left: 16.666667%; }
+    }
+
+    .card-icon { font-size: 2rem; opacity: 0.3; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); }
+
+    .card-gradient-green {
+      background: linear-gradient(135deg, #1B5E20 0%, #4CAF50 100%);
+      color: white !important;
+      border: none !important;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card-gradient-green:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(27, 94, 32, 0.3) !important; }
+    .card-gradient-green h5, .card-gradient-green span, .card-gradient-green strong { color: #ffffff !important; }
+    .card-gradient-green .card-icon { color: #ffffff !important; opacity: 0.3; }
+
+  /* CSS Profile Card (HORIZONTAL) */
+.profile-card {
+  display: flex;           
+  align-items: center;      
+  justify-content: flex-start;
+  background: rgba(255, 255, 255, 0.1); 
+  border-radius: 12px;       
+  padding: 10px 15px;       
+  margin-bottom: 20px;
+  transition: background 0.3s;
+}
+
+.profile-card:hover {
+  background: rgba(255, 255, 255, 0.2); 
+}
+
+.profile-avatar {
+  width: 50px;              
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.4rem;         
+  margin-right: 15px;         
+  flex-shrink: 0;             
+}
+
+.profile-info {
+  text-align: left;           
+  line-height: 1.2;
+}
+
+.profile-name {
+  font-size: 0.95rem;         
+  font-weight: 700;
+  color: #ffffff !important;
+  margin: 0;
+}
+
+.profile-role {
+  font-size: 0.75rem;         
+  color: #dcedc8 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.divisi-badge {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.7);
+}
+
+/* 1. Styling Overlay */
+#sidebarOverlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1030;
+  display: none; 
+}
+
+/* 2. Styling Navbar Mobile */
+.navbar-custom {
+  background-color: #0a90cd;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+.navbar-custom .navbar-brand {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: white !important;
+}
+
+/* 3. Logika Mobile Sidebar */
+@media (max-width: 767.98px) {
+  .navbar-custom { display: flex; }
+  
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px; 
+    z-index: 1040;
+    transform: translateX(-100%); 
+    transition: transform 0.3s ease-in-out;
+    display: block !important; 
+    padding-top: 60px; 
+    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+  }
+
+  #sidebar.show {
+    transform: translateX(0);
+  }
+
+  #sidebarOverlay.show { display: block; }
+
+  .content-area {
+    width: 100% !important;
+    margin-left: 0 !important;
+    padding: 15px !important;
+  }
+  
+  .close-sidebar-btn {
+    display: block !important;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+}
+
+.close-sidebar-btn { display: none; }
+@media (min-width: 768px) {
+  .navbar-custom { display: none; }
+}
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN SECTION -->
+  <div id="login-section">
+  <div class="card login-card shadow">
+    
+<div class="text-center mb-4 logo-wrapper">
+
+  <!-- Logo utama -->
+  <div class="logo-circle">
+    <img src="https://raw.githubusercontent.com/mohdreynaldi-afk/lematang-assets/main/logo-lematang1.png" 
+         alt="Logo Lematang"
+         class="logo-img">
+  </div>
+
+  <!-- Logo tambahan -->
+  <div class="logo-sub mt-3">
+    <img src="https://raw.githubusercontent.com/mohdreynaldi-afk/lematang-assets/main/logo-lematang2.png" 
+         alt="Logo Pendukung">
+  </div>
+
+  <!-- Subjudul utama (jadi fokus sekarang) -->
+  <p class="logo-subtitle mt-3">
+    Layanan Elektronik Manajemen Arsip dan Data Penunjang
+  </p>
+
+  <!-- Instansi -->
+  <p class="logo-instansi">Dinas PUPR Lahat</p>
+
+  <!-- Info login -->
+  <p class="text-muted small">Silakan login untuk akses</p>
+
+</div>
+
+    
+    <form id="loginForm">
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-control" id="loginUsername">
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" id="loginPass">
+      </div>
+      
+      <button type="submit" class="btn btn-primary-custom w-100">Login <i class="fas fa-sign-in-alt ms-2"></i></button>   
+    </form>
+
+    <div class="text-center mt-3">
+       <button class="btn btn-sm btn-outline-warning" onclick="setupAdmin()">
+         <i class="fas fa-tools"></i> Setup Default Admin
+       </button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP SECTION -->
+<div id="main-app" class="d-none">
+
+  <!-- 1. NAVBAR MOBILE -->
+  <nav class="navbar-custom d-md-none sticky-top">
+    <button class="btn btn-outline-light btn-sm" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <span class="navbar-brand">LEMATANG</span>
+    <div style="width: 30px;"></div>
+  </nav>
+
+  <div class="container-fluid p-0">
+    <div class="row g-0"> 
+      
+      <!-- Sidebar -->
+      <div id="sidebar" class="col-md-2 sidebar p-3 d-none d-md-block">
+        
+        <i class="fas fa-times close-sidebar-btn" onclick="toggleSidebar()"></i>
+
+        <div class="text-center mb-3">
+          <h5 class="text-white fw-bold"><i class="fas fa-archive"></i> LEMATANG</h5>
+          <hr style="opacity: 0.2; margin: 10px 0;">
+        </div>
+
+        <div class="profile-card">
+          <div class="profile-avatar">
+            <i id="profileIcon" class="fas fa-user"></i>
+          </div>
+          <div class="profile-info">
+            <h5 class="profile-name" id="userNameDisplay">User Name</h5>
+            <div class="profile-role" id="userRoleDisplay">Role</div>
+            <div class="divisi-badge" id="userDivisiDisplay">-</div>
+          </div>
+        </div>
+
+        <nav>
+          <div class="nav-link active" onclick="showSection('dashboard'); closeSidebarMobile();">
+            <i class="fas fa-chart-line"></i> Dashboard
+          </div>
+          
+          <div class="nav-link" onclick="showSection('input'); closeSidebarMobile();">
+            <i class="fas fa-plus-circle"></i> Input Arsip
+          </div>
+          
+          <div class="nav-link" onclick="showSection('list'); closeSidebarMobile();">
+            <i class="fas fa-list"></i> Daftar Arsip
+          </div>
+          
+          <div class="nav-link" onclick="showSection('categories'); closeSidebarMobile();">
+            <i class="fas fa-tags"></i> Kategori
+          </div>
+          
+          <div id="menuUsers" class="nav-link" onclick="showSection('users'); closeSidebarMobile();">
+            <i class="fas fa-users"></i> Users
+          </div>
+
+          <div class="mt-4 px-3">
+            <button class="btn btn-danger w-100 fw-bold" onclick="logout()">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Content Area -->
+      <div class="col-md-10 pt-3 px-4 pb-4 content-area">
+        
+        <!-- Dashboard -->
+        <div id="dashboard" class="app-section active">
+          <h4 class="mb-4">Dashboard</h4>
+          <div class="row" id="statsCards"></div>
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <span>Statistik Input Arsip</span>
+                  <div style="width: 150px;">
+                    <select class="form-select form-select-sm" id="chartFilter">
+                      <option value="monthly">Bulanan</option>
+                      <option value="yearly">Tahunan</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <canvas id="archiveChart"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-header">Log Akses Terakhir</div>
+                <div class="card-body p-0">
+                  <ul class="list-group list-group-flush" id="logList"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!-- LIST ARSIP -->
+<div id="list" class="app-section">
+  <h4 class="mb-4">Daftar Arsip</h4>
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center bg-white flex-wrap gap-2">
+      <!-- Filter Search & Tanggal -->
+      <input type="text" id="searchFilter" class="form-control form-control-sm" style="max-width: 250px;" placeholder="Cari nama/kode..." onkeypress="if(event.key === 'Enter') loadArchives()">
+      
+      <div class="d-flex align-items-center gap-1">
+        <label class="small mb-0 text-muted"></label>
+        <input type="date" id="startDateFilter" class="form-control form-control-sm" style="width: 140px;">
+      </div>
+      <div class="d-flex align-items-center gap-1">
+        <label class="small mb-0 text-muted"></label>
+        <input type="date" id="endDateFilter" class="form-control form-control-sm" style="width: 140px;">
+      </div>
+      
+      <!-- DROPDOWN FILTER DIVISI (DIPERBAIKI) -->
+      <select id="divisiFilter" class="form-select form-select-sm" style="width: 180px;" onchange="loadArchives()">
+        <!-- Opsi diisi via JS -->
+      </select>
+      
+      <button class="btn btn-sm btn-primary-custom" onclick="loadArchives()"><i class="fas fa-search"></i> Cari</button>
+      <button class="btn btn-sm btn-secondary" onclick="resetFilters()" title="Reset Filter"><i class="fas fa-undo"></i> Reset</button>
+      
+      <div class="ms-auto">
+        <button class="btn btn-sm btn-success" onclick="exportData()"><i class="fas fa-file-excel"></i> Export Excel</button>
+      </div>
+    </div>
+    
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Kode</th><th>Nama Arsip</th><th>Divisi</th><th>Kategori</th><th>Tanggal</th><th>Status</th><th>Ket</th><th>File</th><th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="archiveTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FOOTER PAGINATION -->
+    <div class="card-footer bg-white py-3">
+      <div class="row align-items-center">
+        <div class="col-md-4 col-sm-12 mb-2 mb-md-0">
+          <label class="small text-muted me-2">Tampilkan:</label>
+          <select id="rowsPerPageSelect" class="form-select form-select-sm d-inline-block w-auto" onchange="changeRowsPerPage(this.value)">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+          </select>
+          <span class="small text-muted">data per halaman</span>
+        </div>
+
+        <div class="col-md-4 col-sm-12 text-center mb-2 mb-md-0">
+          <span id="paginationInfo" class="small fw-bold">Menampilkan 0 - 0 dari 0 data</span>
+        </div>
+
+        <div class="col-md-4 col-sm-12 text-end">
+          <button id="prevBtn" class="btn btn-sm btn-outline-secondary" onclick="changePage('prev')">
+            <i class="fas fa-chevron-left"></i> Prev
+          </button>
+          <button id="nextBtn" class="btn btn-sm btn-outline-secondary" onclick="changePage('next')">
+            Next <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+        <!-- Input Arsip -->
+        <div id="input" class="app-section">
+          <h4 class="mb-4">Input Arsip Baru</h4>
+          <div class="card">
+            <div class="card-body">
+              <form id="archiveForm">
+                <div class="row">
+                  <div class="col-md-6 mb-3"><label class="form-label">Divisi</label><select class="form-select" id="inputDivisi" required onchange="loadCategoriesForInput()"><option value="">Pilih Divisi...</option></select></div>
+                  <div class="col-md-6 mb-3"><label class="form-label">Kategori Arsip</label><input type="text" class="form-control" id="inputKategori" list="kategoriList" placeholder="Ketik nama kategori..." required autocomplete="off"><datalist id="kategoriList"></datalist></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3"><label class="form-label">Nama Arsip</label><input type="text" class="form-control" id="inputNama" required></div>
+                  <div class="col-md-3 mb-3"><label class="form-label">Kode Arsip (Auto)</label><input type="text" class="form-control" id="inputKode" readonly></div>
+                  <div class="col-md-3 mb-3"><label class="form-label">Jenis File</label><select class="form-select" id="inputJenisFile" required><option value="" selected disabled>Pilih Jenis...</option><option value="pdf">PDF</option><option value="jpg">JPG / JPEG</option><option value="png">PNG</option><option value="txt">TXT</option><option value="docx">DOCX (Word)</option><option value="xlsx">XLSX (Excel)</option></select></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4 mb-3"><label class="form-label">Masa Retensi Aktif (Tahun)</label><input type="text" class="form-control" id="inputRetAktif" readonly></div>
+                  <div class="col-md-4 mb-3"><label class="form-label">Masa Retensi Inaktif (Tahun)</label><input type="text" class="form-control" id="inputRetInaktif" readonly></div>
+                  <div class="col-md-4 mb-3"><label class="form-label">Keterangan</label><input type="text" class="form-control" id="inputKeterangan"></div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Upload File</label>
+                  <div id="drop-area"><i class="fas fa-cloud-upload-alt fa-2x text-muted"></i><p class="mb-0">Drag & Drop file di sini atau klik untuk pilih</p><input type="file" id="fileElem" style="display:none" onchange="handleFiles(this.files)"><div id="preview" class="mt-2 text-success"></div></div>
+                </div>
+                <button type="submit" class="btn btn-success btn-action"><i class="fas fa-save"></i> Simpan Arsip</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+       <!-- Categories Section -->
+<div id="categories" class="app-section">
+  <h4 class="mb-4">Manajemen Kategori</h4>
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center bg-white">
+      <span>Daftar Kategori Arsip</span>
+      <button class="btn btn-sm btn-success" onclick="openCategoryModal()"><i class="fas fa-plus"></i> Tambah Kategori</button>
+    </div>
+    
+    <div class="card-body p-0"> 
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Divisi</th>
+              <th>Kategori</th>
+              <th>Aktif</th>
+              <th>Inaktif</th>
+              <th>Keterangan</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="categoryTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FOOTER PAGINATION KATEGORI -->
+    <div class="card-footer bg-white py-3">
+      <div class="row align-items-center">
+        <div class="col-md-4 col-sm-12 mb-2 mb-md-0">
+          <label class="small text-muted me-2">Tampilkan:</label>
+          <select id="catRowsPerPageSelect" class="form-select form-select-sm d-inline-block w-auto" onchange="changeCatRowsPerPage(this.value)">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+          </select>
+          <span class="small text-muted">data per halaman</span>
+        </div>
+
+        <div class="col-md-4 col-sm-12 text-center mb-2 mb-md-0">
+          <span id="catPaginationInfo" class="small fw-bold">Menampilkan 0 - 0 dari 0 data</span>
+        </div>
+
+        <div class="col-md-4 col-sm-12 text-end">
+          <button id="catPrevBtn" class="btn btn-sm btn-outline-secondary" onclick="changeCatPage('prev')">
+            <i class="fas fa-chevron-left"></i> Prev
+          </button>
+          <button id="catNextBtn" class="btn btn-sm btn-outline-secondary" onclick="changeCatPage('next')">
+            Next <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+        <!-- Users Section -->
+        <div id="users" class="app-section">
+          <h4 class="mb-4">Manajemen Pengguna</h4>
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center bg-white">
+              <span>Daftar Pengguna Aplikasi</span>
+              <button class="btn btn-sm btn-primary" onclick="openUserModal()"><i class="fas fa-user-plus"></i> Tambah User</button>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead class="table-light"><tr><th>Nama Lengkap</th><th>Username</th><th>Role / Akses</th><th>Divisi</th><th>Aksi</th></tr></thead>
+                  <tbody id="userTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div> 
+    </div> 
+  </div> 
+
+  <div id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+</div> 
+
+<!-- Modal User Form -->
+<div class="modal fade" id="userModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="userModalTitle">Tambah Pengguna</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="userForm">
+          <input type="hidden" id="userRowIndex">
+          
+          <div class="mb-3">
+            <label class="form-label">Nama Lengkap</label>
+            <input type="text" class="form-control" id="userNama" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control" id="userName" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" id="userPass" required placeholder="Isi password baru">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Role</label>
+            <select class="form-select" id="userRole">
+              <option value="User">User</option>
+              <option value="Admin">Admin</option>
+              <option value="Super Admin">Super Admin</option>
+            </select>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Divisi (Untuk Admin/User biasa)</label>
+            <select class="form-select" id="userDivisi">
+              <option value="">-- Kosong / Super Admin --</option>
+              <option value="ArsipMasuk">Surat Masuk</option>
+              <option value="ArsipKeluar">Surat Keluar</option>
+              <option value="ArsipFoto">Dokumentasi Kegiatan</option>
+              <option value="ArsipKKPR">Dokumen KKPR</option>
+              <option value="ArsipAdministrasi">Surat Tugas</option>
+            </select>
+            <small class="text-muted">Pilih Divisi jika User atau Admin. Kosongkan jika Super Admin.</small>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Simpan User</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Modal Form Kategori -->
+  <div class="modal fade" id="categoryModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="categoryModalTitle">Tambah Kategori</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="categoryForm">
+            <input type="hidden" id="catRowIndex"> 
+            <div class="mb-3">
+              <label class="form-label">Divisi</label>
+              <select class="form-select" id="catDivisi" required>
+                <option value="">Pilih Divisi...</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Nama Kategori</label>
+              <input type="text" class="form-control" id="catNama" required>
+            </div>
+            <div class="row">
+              <div class="col-6 mb-3">
+                <label class="form-label">Retensi Aktif (Thn)</label>
+                <input type="number" class="form-control" id="catAktif" required>
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label">Retensi Inaktif (Thn)</label>
+                <input type="number" class="form-control" id="catInaktif" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Keterangan</label>
+              <input type="text" class="form-control" id="catKet">
+            </div>
+            <button type="submit" class="btn btn-success w-100">Simpan Kategori</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal Edit Arsip -->
+<div class="modal fade" id="editArchiveModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Edit Data Arsip</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editArchiveForm">
+          <input type="hidden" id="editId">
+          <input type="hidden" id="editDivisi"> 
+          
+          <div class="mb-3">
+            <label class="form-label">Divisi</label>
+            <input type="text" class="form-control" id="editDivisiDisplay" readonly style="background-color: #e9ecef;">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Kategori Arsip</label>
+            <input type="text" class="form-control" id="editKategori" readonly style="background-color: #e9ecef;">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Kode Arsip</label>
+            <input type="text" class="form-control" id="editKode" readonly style="background-color: #e9ecef;">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Nama Arsip</label>
+            <input type="text" class="form-control" id="editNama" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Jenis File</label>
+            <select class="form-select" id="editJenisFile" required>
+              <option value="pdf">PDF</option>
+              <option value="jpg">JPG / JPEG</option>
+              <option value="png">PNG</option>
+              <option value="txt">TXT</option>
+              <option value="docx">DOCX (Word)</option>
+              <option value="xlsx">XLSX (Excel)</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Keterangan</label>
+            <input type="text" class="form-control" id="editKeterangan">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Update File (Opsional)</label>
+            <div id="drop-area-edit" class="border p-2 text-center rounded" style="border-style: dashed; border-color: #ccc; cursor:pointer;">
+              <small class="text-muted">Klik untuk ganti file (Jika ingin tetap sama, abaikan)</small>
+              <input type="file" id="fileElemEdit" style="display:none" onchange="handleEditFiles(this.files)">
+              <div id="previewEdit" class="mt-1 text-success small"></div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Simpan Perubahan</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+   <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    // ================= STATE =================
+    let currentUser = null;
+    let selectedFileBase64 = null;
+    let selectedFileName = null;
+    let dashboardChartInstance = null;
+    let cachedDashboardData = null;
+    let currentCategoryList = [];
+    let selectedEditFileBase64 = null;
+    let selectedEditFileName = null;
+    let editModalInstance;
+    let filteredArchiveData = []; 
+    let currentPage = 1;
+    let rowsPerPage = 10;
+    let categoryData = []
+    let catCurrentPage = 1;
+    let catRowsPerPage = 10;
+
+    // ================= INITIALIZATION =================
+    document.addEventListener('DOMContentLoaded', () => {
+  
+  const savedUser = localStorage.getItem('userSession');
+  if (savedUser) {
+    try {
+      currentUser = JSON.parse(savedUser);
+      
+      document.getElementById('login-section').classList.add('d-none');
+      document.getElementById('main-app').classList.remove('d-none');
+      
+      document.getElementById('userNameDisplay').innerText = currentUser.name;
+      document.getElementById('userRoleDisplay').innerText = currentUser.role;
+      
+      const divisiMap = {
+          "ArsipMasuk": "Surat Masuk", "ArsipKeluar": "Surat Keluar", "ArsipFoto": "Dokumentasi Kegiatan",
+          "ArsipKKPR": "Dokumen KKPR", "ArsipAdministrasi": "Surat Tugas"
+      };
+      const divName = currentUser.divisi ? (divisiMap[currentUser.divisi] || currentUser.divisi) : "-";
+      document.getElementById('userDivisiDisplay').innerText = divName;
+
+      const iconEl = document.getElementById('profileIcon');
+      iconEl.className = "fas"; 
+      if (currentUser.role === "Super Admin") {
+          iconEl.classList.add("fa-user-shield");
+          document.getElementById('userRoleDisplay').style.color = "#ffc107";
+      } else if (currentUser.role === "Admin") {
+          iconEl.classList.add("fa-user-tie");
+          document.getElementById('userRoleDisplay').style.color = "#81d4fa";
+      } else {
+          iconEl.classList.add("fa-user");
+          document.getElementById('userRoleDisplay').style.color = "#dcedc8";
+      }
+      
+      populateDivisionDropdowns();
+      const lastSection = localStorage.getItem('activeSection') || 'dashboard';
+      showSection(lastSection);
+      
+    } catch (e) {
+      console.error("Sesi rusak", e);
+      localStorage.removeItem('userSession');
+    }
+  }
+  
+  document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const username = document.getElementById('loginUsername').value;
+    const pass = document.getElementById('loginPass').value;
+    doLogin(username, pass);
+  });
+
+  document.getElementById('archiveForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    saveArchive();
+  });
+
+  const dropArea = document.getElementById('drop-area');
+  const fileElem = document.getElementById('fileElem');
+
+  if(dropArea && fileElem) {
+    dropArea.addEventListener('click', () => fileElem.click());
+    dropArea.addEventListener('dragover', (e) => { 
+      e.preventDefault(); 
+      dropArea.classList.add('highlight'); 
+    });
+    dropArea.addEventListener('dragleave', () => { 
+      dropArea.classList.remove('highlight'); 
+    });
+    dropArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropArea.classList.remove('highlight');
+      handleFiles(e.dataTransfer.files);
+    });
+  }
+});
+
+    function doLogin(username, pass) {
+      Swal.fire({title: 'Login...', didOpen: () => Swal.showLoading()});
+      google.script.run
+        .withSuccessHandler(onLoginSuccess)
+        .withFailureHandler(onError)
+        .authenticateUser(username, pass);
+    }
+
+   function onLoginSuccess(response) {
+  Swal.close();
+  if (response.status) {
+    currentUser = response.user;
+    
+    localStorage.setItem('userSession', JSON.stringify(response.user));
+
+    document.getElementById('login-section').classList.add('d-none');
+    document.getElementById('main-app').classList.remove('d-none');
+    
+    document.getElementById('userNameDisplay').innerText = currentUser.name;
+    document.getElementById('userRoleDisplay').innerText = currentUser.role;
+    
+    const divisiMap = {
+        "ArsipMasuk": "Surat MAsuk", "ArsipKeluar": "Surat Keluar", "ArsipFoto": "Dokumentasi Foto",
+        "ArsipKKPR": "Dokumen KKPR", "ArsipAdministrasi": "Surat Tugas"
+    };
+    const divName = currentUser.divisi ? (divisiMap[currentUser.divisi] || currentUser.divisi) : "-";
+    document.getElementById('userDivisiDisplay').innerText = divName;
+
+    const iconEl = document.getElementById('profileIcon');
+    iconEl.className = "fas";
+    
+    if (currentUser.role === "Super Admin") {
+        iconEl.classList.add("fa-user-shield"); 
+        document.getElementById('userRoleDisplay').style.color = "#ffc107";
+    } else if (currentUser.role === "Admin") {
+        iconEl.classList.add("fa-user-tie");
+        document.getElementById('userRoleDisplay').style.color = "#81d4fa";
+    } else {
+        iconEl.classList.add("fa-user");
+        document.getElementById('userRoleDisplay').style.color = "#dcedc8";
+    }
+
+    if (currentUser.role !== "Super Admin") {
+      const menuUsers = document.getElementById('menuUsers');
+      if(menuUsers) menuUsers.style.display = 'none';
+    } else {
+      const menuUsers = document.getElementById('menuUsers');
+      if(menuUsers) menuUsers.style.display = 'block';
+    }
+    
+    populateDivisionDropdowns();
+    showSection('dashboard');
+  } else {
+    Swal.fire('Gagal Login', response.message, 'error');
+  }
+}
+
+    function logout() {
+      localStorage.removeItem('userSession');
+      currentUser = null;
+      document.getElementById('main-app').classList.add('d-none');
+      document.getElementById('login-section').classList.remove('d-none');
+      document.getElementById('loginForm').reset();
+    }
+
+    function showSection(sectionId) {
+      document.querySelectorAll('.app-section').forEach(el => el.classList.remove('active'));
+      document.getElementById(sectionId).classList.add('active');
+      
+      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+      const links = document.querySelectorAll('.nav-link');
+      links.forEach(l => {
+        if(l.getAttribute('onclick').includes(sectionId)) l.classList.add('active');
+      });
+
+      localStorage.setItem('activeSection', sectionId);
+
+      if (sectionId === 'dashboard') loadDashboard();
+      if (sectionId === 'list') loadArchives(); 
+      if (sectionId === 'categories') loadCategories();
+      if (sectionId === 'users') loadUsers();
+    }
+
+    function setupAdmin() {
+      Swal.fire({
+        title: 'Setup Admin',
+        text: "Ini akan membuat user default (admin/admin123) jika belum ada. Lanjutkan?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, Buat Admin'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({title: 'Memproses...', didOpen: () => Swal.showLoading()});
+          google.script.run.withSuccessHandler((res) => {
+            Swal.close();
+            if (res.success) {
+              Swal.fire('Sukses', res.message, 'success');
+            } else {
+              Swal.fire('Info', res.message, 'info');
+            }
+          }).withFailureHandler(onError).ensureDefaultAdmin();
+        }
+      });
+    }
+
+    function handleFiles(files) {
+      if (files.length === 0) return;
+      const file = files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = function() {
+        selectedFileBase64 = reader.result;
+        selectedFileName = file.name;
+        document.getElementById('preview').innerHTML = `<i class="fas fa-check-circle"></i> File terpilih: <strong>${file.name}</strong>`;
+        document.getElementById('drop-area').style.borderColor = "var(--primary-color)";
+      }
+    }
+
+    function loadDashboard() {
+      // === PERBAIKAN: Kirim filter ke backend ===
+      const filter = {
+        userRole: currentUser.role,
+        userDivisi: currentUser.divisi
+      };
+
+      google.script.run.withSuccessHandler(data => {
+        cachedDashboardData = data;
+        renderDashboard(data, 'monthly');
+      }).getDashboardData(filter); // Kirim filter di sini
+    }
+
+   function renderDashboard(data, chartType = 'monthly') {
+  const statsContainer = document.getElementById('statsCards');
+  let html = '<div class="row dashboard-section">';
+
+  html += `
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card bg-primary text-white stat-card position-relative">
+        <i class="fas fa-box-archive card-icon"></i>
+        <div class="card-body">
+          <h3>${data.totalArsip}</h3>
+          <span>Total Arsip</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card bg-success text-white stat-card position-relative">
+        <i class="fas fa-check-circle card-icon"></i>
+        <div class="card-body">
+          <h3>${data.totalAktif}</h3>
+          <span>Aktif</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card bg-warning text-dark stat-card position-relative">
+        <i class="fas fa-pause-circle card-icon"></i>
+        <div class="card-body">
+          <h3>${data.totalInaktif}</h3>
+          <span>Inaktif</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3 mb-3">
+      <div class="card bg-danger text-white stat-card position-relative">
+        <i class="fas fa-trash-alt card-icon"></i>
+        <div class="card-body">
+          <h3>${data.totalMusnah}</h3>
+          <span>Harus Dimusnahkan</span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  html += '</div>'; 
+
+  html += '<div class="row dashboard-section">';
+
+  const divConfig = {
+    'ArsipMasuk': { icon: 'fa-money-bill-wave', color: 'success' },
+    'ArsipKeluar': { icon: 'fa-users', color: 'primary' },
+    'ArsipFoto': { icon: 'fa-cogs', color: 'warning' },
+    'ArsipKKPR': { icon: 'fa-laptop-code', color: 'info' },
+    'ArsipAdministrasi': { icon: 'fa-folder-open', color: 'secondary' },
+    };
+
+  const divNameMap = {
+    "ArsipMasuk": "Surat Masuk",
+    "ArsipKeluar": "Surat Keluar",
+    "ArsipFoto": "Dokumentasi Foto",
+    "ArsipKKPR": "Dokumen KKPR",
+    "ArsipAdministrasi": "Surat Tugas"
+  };
+
+  const masterDivisions = ["ArsipMasuk", "ArsipKeluar", "ArsipFoto", "ArsipKKPR", "ArsipAdministrasi"];
+
+  masterDivisions.forEach(divKey => {
+    let count = 0;
+    
+    if (currentUser.role === "Super Admin") {
+      if (data.divCounts && data.divCounts[divKey]) count = data.divCounts[divKey];
+    } else {
+      if (divKey === currentUser.divisi && data.divCounts) {
+        count = data.divCounts[divKey] || 0;
+      } else {
+        return; 
+      }
+    }
+
+    const displayName = divNameMap[divKey] || divKey;
+    const icon = divConfig[divKey] ? divConfig[divKey].icon : 'fa-box';
+    
+    html += `
+      <div class="col-6 col-md-4 mb-3">
+        <div class="card card-gradient-green shadow-sm stat-card position-relative">
+          <i class="fas ${icon} card-icon"></i>
+          <div class="card-body">
+            <h5>${count}</h5>
+            <span>${displayName}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  html += '</div>';
+  statsContainer.innerHTML = html;
+
+  const ctx = document.getElementById('archiveChart').getContext('2d');
+  if (dashboardChartInstance) dashboardChartInstance.destroy();
+  
+  let labels = [];
+  let values = [];
+  const rawDates = data.chartData && data.chartData.dates ? data.chartData.dates : [];
+
+  if (chartType === 'monthly') {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth(); 
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
+    const currentMonthName = monthNames[month];
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      labels.push(String(day)); 
+      const targetDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      const count = rawDates.filter(d => d === targetDateStr).length;
+      values.push(count);
+    }
+    document.querySelector('.card-header span').innerText = `Statistik Harian - ${currentMonthName} ${year}`;
+
+  } else {
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
+    labels = monthNames;
+    
+    monthNames.forEach((m, index) => {
+      const count = rawDates.filter(d => {
+        const dateObj = new Date(d);
+        return dateObj.getMonth() === index;
+      }).length;
+      values.push(count);
+    });
+    document.querySelector('.card-header span').innerText = `Statistik Bulanan (Keseluruhan)`;
+  }
+  
+  dashboardChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Jumlah Arsip',
+        data: values,
+        backgroundColor: '#0a90cd'
+      }]
+    },
+    options: { 
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { precision: 0 }
+        }
+      }
+    }
+  });
+
+  const logList = document.getElementById('logList');
+  
+  if (data.recentLogs && data.recentLogs.length > 0) {
+    logList.innerHTML = data.recentLogs.map(log => `
+      <li class="list-group-item px-2">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <strong class="text-primary-custom">${log.user}</strong>
+          <small class="text-muted">${log.date}</small>
+        </div>
+        <div class="fw-bold text-dark" style="font-size: 0.9em;">
+          <i class="fas fa-chevron-right text-secondary" style="font-size: 0.7em;"></i> ${log.action}
+        </div>
+        <div class="text-muted small text-truncate" title="${log.detail}">
+          ${log.detail}
+        </div>
+      </li>
+    `).join('');
+  } else {
+    logList.innerHTML = `
+      <li class="list-group-item text-center text-muted">
+        <small>Belum ada aktivitas tercatat.</small>
+      </li>
+    `;
+  }
+}
+
+    document.getElementById('chartFilter').addEventListener('change', (e) => {
+      if (cachedDashboardData) renderDashboard(cachedDashboardData, e.target.value);
+    });
+
+   function populateDivisionDropdowns() {
+  const divisionMap = {
+    "ArsipMasuk": "Surat Masuk",
+    "ArsipKeluar": "Surat Keluar",
+    "ArsipFoto": "Dokumentasi Foto",
+    "ArsipKKPR": "Dokumen KKPR",
+    "ArsipAdministrasi": "Surat Tugas"
+  };
+  
+  const divisionKeys = Object.keys(divisionMap);
+
+  const inputSelect = document.getElementById('inputDivisi');
+  const filterSelect = document.getElementById('divisiFilter');
+  const catSelect = document.getElementById('catDivisi');
+  
+  inputSelect.innerHTML = '<option value="">Pilih Divisi...</option>';
+  // RESET FILTER SELECT DI SINI
+  filterSelect.innerHTML = ''; 
+  catSelect.innerHTML = '<option value="">Pilih Divisi...</option>';
+  
+  // === PERBAIKAN LOGIKA FILTER SELECT (DIVISI FILTER PADA DAFTAR ARSIP) ===
+  if (currentUser.role === "Super Admin") {
+    // Super Admin: Bisa lihat "Semua Divisi"
+    filterSelect.innerHTML += `<option value="All">Semua Divisi</option>`;
+    divisionKeys.forEach(key => {
+       filterSelect.innerHTML += `<option value="${key}">${divisionMap[key]}</option>`;
+    });
+    filterSelect.disabled = false;
+  } else {
+    // Admin/User: HANYA Bisa lihat Divisinya sendiri. Tidak ada opsi "Semua"
+    filterSelect.innerHTML += `<option value="${currentUser.divisi}" selected>${divisionMap[currentUser.divisi]}</option>`;
+    filterSelect.disabled = true; // Kunci agar tidak bisa diganti
+    filterSelect.style.backgroundColor = "#e9ecef";
+  }
+  // ============================================================
+
+  if (currentUser.role !== "Super Admin") {
+    inputSelect.innerHTML = `<option value="${currentUser.divisi}">${divisionMap[currentUser.divisi]}</option>`;
+    inputSelect.value = currentUser.divisi;
+    inputSelect.disabled = true; 
+    inputSelect.style.backgroundColor = "#e9ecef";
+    
+    loadCategoriesLogic(currentUser.divisi);
+
+  } else {
+    divisionKeys.forEach(key => {
+      inputSelect.innerHTML += `<option value="${key}">${divisionMap[key]}</option>`;
+    });
+    inputSelect.disabled = false;
+  }
+}
+
+    function loadCategoriesForInput() {
+      loadCategoriesLogic(document.getElementById('inputDivisi').value);
+    }
+
+    function loadCategoriesLogic(div) {
+      const catInput = document.getElementById('inputKategori');
+      const dataList = document.getElementById('kategoriList');
+      catInput.value = "";
+      dataList.innerHTML = ""; 
+      currentCategoryList = []; 
+      document.getElementById('inputRetAktif').value = "";
+      document.getElementById('inputRetInaktif').value = "";
+      document.getElementById('inputKeterangan').value = "";
+      document.getElementById('inputKode').value = "";
+
+      if(div) {
+        catInput.placeholder = "Memuat data...";
+        google.script.run.withSuccessHandler(categories => {
+          catInput.placeholder = "Ketik nama kategori...";
+          currentCategoryList = categories.filter(c => c.divisi === div);
+          currentCategoryList.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.kategori; 
+            dataList.appendChild(opt);
+          });
+          google.script.run.withSuccessHandler(newCode => {
+            document.getElementById('inputKode').value = newCode;
+          }).generateCodeByDivision(div);
+
+        }).getCategories({
+          userRole: currentUser.role,
+          userDivisi: currentUser.divisi
+        });
+
+      } else {
+        catInput.placeholder = "Pilih divisi terlebih dahulu";
+      }
+    }
+
+    document.getElementById('inputKategori').addEventListener('input', function(e) {
+      const val = e.target.value;
+      const match = currentCategoryList.find(c => c.kategori === val);
+      if (match) {
+        document.getElementById('inputRetAktif').value = match.retensiAktif;
+        document.getElementById('inputRetInaktif').value = match.retensiInaktif;
+        document.getElementById('inputKeterangan').value = match.keterangan;
+      }
+    });
+
+    function saveArchive() {
+  const formData = {
+    divisi: document.getElementById('inputDivisi').value,
+    kategori: document.getElementById('inputKategori').value,
+    nama: document.getElementById('inputNama').value,
+    retensiAktif: document.getElementById('inputRetAktif').value,
+    retensiInaktif: document.getElementById('inputRetInaktif').value,
+    keterangan: document.getElementById('inputKeterangan').value,
+    fileType: document.getElementById('inputJenisFile').value,
+    fileData: selectedFileBase64,
+    fileName: selectedFileName,
+    userRole: currentUser.role,
+    userDivisi: currentUser.divisi,
+    userName: currentUser.name
+  };
+
+  if (!formData.fileData) {
+    Swal.fire('Peringatan', 'Mohon upload file arsip.', 'warning');
+    return;
+  }
+  if (!formData.fileType) {
+    Swal.fire('Peringatan', 'Mohon pilih Jenis File.', 'warning');
+    return;
+  }
+
+  Swal.fire({
+    title: 'Menyimpan...',
+    text: 'Sedang mengupload file dan menyimpan data',
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  google.script.run
+    .withSuccessHandler(res => {
+      Swal.close();
+      if (res.success) {
+        Swal.fire('Berhasil', `Arsip ${res.code} berhasil disimpan.`, 'success');
+        
+        document.getElementById('archiveForm').reset();
+        document.getElementById('preview').innerHTML = "";
+        selectedFileBase64 = null;
+        
+        // Reset filter list agar data baru muncul
+        document.getElementById('searchFilter').value = "";
+        document.getElementById('startDateFilter').value = "";
+        document.getElementById('endDateFilter').value = "";
+        // Filter divisi jangan di-reset ke All jika dia Admin, tapi biarkan di posisi divisinya
+        // (Reset value All hanya jika Super Admin)
+        if(currentUser.role === "Super Admin") {
+            document.getElementById('divisiFilter').value = "All"; 
+        }
+
+        showSection('list');
+      }
+    })
+    .withFailureHandler(onError)
+    .addArchive(formData);
+}
+
+    function loadArchives() {
+  Swal.fire({
+    title: 'Memuat Data...',
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  const filter = {
+    search: document.getElementById('searchFilter').value,
+    divisi: document.getElementById('divisiFilter').value,
+    startDate: document.getElementById('startDateFilter').value,
+    endDate: document.getElementById('endDateFilter').value,
+    userRole: currentUser.role,
+    userDivisi: currentUser.divisi
+  };
+  
+  google.script.run
+    .withSuccessHandler(data => {
+      Swal.close();
+      if (!data) data = [];
+      filteredArchiveData = data;
+      currentPage = 1;
+      
+      const rpp = document.getElementById('rowsPerPageSelect');
+      if(rpp) rowsPerPage = parseInt(rpp.value);
+
+      renderArchiveTable();
+    })
+    .withFailureHandler(error => {
+      Swal.close();
+      console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Terjadi Kesalahan',
+        text: 'Gagal memuat data: ' + error.message
+      });
+    })
+    .getArchives(filter);
+}
+
+    function resetFilters() {
+      document.getElementById('searchFilter').value = "";
+      document.getElementById('startDateFilter').value = "";
+      document.getElementById('endDateFilter').value = "";
+      
+      // Reset filter divisi: Jika Super Admin -> All, Jika Admin -> Divisi Sendiri
+      if(currentUser.role === "Super Admin") {
+        document.getElementById('divisiFilter').value = "All";
+      } else {
+        document.getElementById('divisiFilter').value = currentUser.divisi;
+      }
+      
+      loadArchives();
+    }
+
+    function renderArchiveTable() {
+  const tbody = document.getElementById('archiveTableBody');
+  tbody.innerHTML = "";
+  
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  
+  const pageData = filteredArchiveData.slice(startIndex, endIndex);
+  
+  if (!pageData || pageData.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" class="text-center">Tidak ada data arsip ditemukan.</td></tr>`;
+    updatePaginationControls(0);
+    return;
+  }
+
+  pageData.forEach(item => {
+    const statusClass = item.status.replace(/\s/g, '-');
+    const row = `
+      <tr>
+        <td class="fw-bold text-primary-custom">${item.kode}</td>
+        <td>${item.nama}</td>
+        <td>${item.divisi}</td>
+        <td>${item.kategori}</td>
+        <td>${item.tanggalDisplay}</td>
+        <td><span class="badge badge-${statusClass}">${item.status}</span></td>
+        <td><small>${item.keterangan || '-'}</small></td>
+        <td>
+           <span class="badge bg-info text-dark">${item.jenisFile}</span>
+           ${item.fileId 
+            ? `<a href="https://drive.google.com/file/d/${item.fileId}/view?usp=drivesdk" target="_blank" class="btn btn-sm btn-outline-primary ms-1" title="Lihat File"><i class="fas fa-eye"></i></a>` 
+            : ''}
+        </td>
+        <td>
+          <button class="btn btn-sm btn-primary" onclick="openEditModal('${item.id}')" title="Edit Data"><i class="fas fa-edit"></i></button>
+          <button class="btn btn-sm btn-danger" onclick="deleteArchive('${item.id}', '${item.divisi}')" title="Hapus"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>
+    `;
+    tbody.innerHTML += row;
+  });
+
+  updatePaginationControls(filteredArchiveData.length);
+}
+
+    function deleteArchive(id, divisi) {
+      Swal.fire({
+        title: 'Hapus Arsip?',
+        text: "File di Drive juga akan dihapus permanen!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Ya, Hapus'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          google.script.run.withSuccessHandler(() => {
+            Swal.fire('Terhapus', 'Arsip telah dihapus.', 'success');
+            loadArchives();
+          }).withFailureHandler(onError).deleteArchive(id, divisi,currentUser.name);
+        }
+      })
+    }
+    
+function exportData() {
+  const filter = {
+    search: document.getElementById('searchFilter').value,
+    divisi: document.getElementById('divisiFilter').value,
+    startDate: document.getElementById('startDateFilter').value,
+    endDate: document.getElementById('endDateFilter').value,
+    userRole: currentUser.role,
+    userDivisi: currentUser.divisi
+  };
+
+  Swal.fire({
+    title: 'Exporting...',
+    text: 'Mohon tunggu sebentar...',
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  google.script.run
+    .withSuccessHandler(archiveData => {
+      google.script.run
+        .withSuccessHandler((fileId) => {
+          Swal.close();
+          const downloadUrl = `https://docs.google.com/spreadsheets/d/${fileId}/export?format=xlsx`;
+          window.open(downloadUrl, '_blank');
+          Swal.fire({
+            title: 'Berhasil',
+            text: 'File Excel sedang terdownload.',
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false
+          });
+        })
+        .withFailureHandler(err => {
+          Swal.close();
+          console.error(err);
+          Swal.fire('Error', 'Gagal membuat Excel: ' + err.message, 'error');
+        })
+        .exportToExcel(archiveData);
+        
+    })
+    .withFailureHandler(err => {
+      Swal.close();
+      console.error(err);
+      Swal.fire('Error', 'Gagal mengambil data: ' + err.message, 'error');
+    })
+    .getArchives(filter);
+}
+
+    let categoryModalInstance;
+   function loadCategories() {
+  const filter = {
+    userRole: currentUser.role,
+    userDivisi: currentUser.divisi
+  };
+
+  google.script.run.withSuccessHandler(data => {
+    categoryData = data;
+    catCurrentPage = 1;
+    
+    const rppElement = document.getElementById('catRowsPerPageSelect');
+    if(rppElement) {
+      catRowsPerPage = parseInt(rppElement.value);
+    }
+
+    renderCategoryTable();
+  }).getCategories(filter); 
+}
+
+    function openCategoryModal() {
+  document.getElementById('catRowIndex').value = "";
+  document.getElementById('categoryForm').reset();
+  document.getElementById('categoryModalTitle').innerText = "Tambah Kategori";
+  
+  const catSelect = document.getElementById('catDivisi');
+  catSelect.innerHTML = '<option value="">Pilih Divisi...</option>';
+  const divisions = ["ArsipMasuk", "ArsipKeluar", "ArsipFoto", "ArsipKKPR", "ArsipAdministrasi"];
+  
+  const divNameMap = {
+    "ArsipMasuk": "Surat Masuk",
+    "ArsipKeluar": "Surat Keluar",
+    "ArsipFoto": "Dokumentasi Foto",
+    "ArsipKKPR": "Dokumen KKPR",
+    "ArsipAdministrasi": "Surat Tugas"
+  };
+
+  if (currentUser.role !== "Super Admin") {
+    catSelect.innerHTML = `<option value="${currentUser.divisi}">${divNameMap[currentUser.divisi]}</option>`;
+    catSelect.value = currentUser.divisi;
+    catSelect.disabled = true; 
+    catSelect.style.backgroundColor = "#e9ecef";
+  } else {
+    divisions.forEach(d => {
+      catSelect.innerHTML += `<option value="${d}">${divNameMap[d]}</option>`;
+    });
+    catSelect.disabled = false;
+  }
+
+  const modalEl = document.getElementById('categoryModal');
+  categoryModalInstance = new bootstrap.Modal(modalEl);
+  categoryModalInstance.show();
+}
+
+    function editCategory(rowIndex, divisi, kategori, aktif, inaktif, ket) {
+  // 1. Ambil elemen select divisi
+  const catSelect = document.getElementById('catDivisi');
+  
+  // 2. Siapkan Data Divisi
+  const divisions = ["ArsipMasuk", "ArsipKeluar", "ArsipFoto", "ArsipKKPR", "ArsipAdministrasi"];
+  
+  const divNameMap = {
+    "ArsipMasuk": "Surat Masuk",
+    "ArsipKeluar": "Surat Keluar",
+    "ArsipFoto": "Dokumentasi Foto",
+    "ArsipKKPR": "Dokumen KKPR",
+    "ArsipAdministrasi": "Surat Tugas"
+  };
+
+  // 3. ISI DROPDOWN SEBELUM SET VALUE (Bagian yang kurang)
+  catSelect.innerHTML = ''; // Reset dulu
+
+  if (currentUser.role !== "Super Admin") {
+    // Jika User Biasa/Admin: Kunci ke divisi sendiri
+    catSelect.innerHTML = `<option value="${currentUser.divisi}">${divNameMap[currentUser.divisi]}</option>`;
+    catSelect.value = currentUser.divisi;
+    catSelect.disabled = true; 
+    catSelect.style.backgroundColor = "#e9ecef";
+  } else {
+    // Jika Super Admin: Tampilkan semua divisi
+    divisions.forEach(d => {
+      catSelect.innerHTML += `<option value="${d}">${divNameMap[d]}</option>`;
+    });
+    catSelect.disabled = false;
+    catSelect.style.backgroundColor = "";
+    // SET VALUE DIVISI YANG SEDANG DIEDIT
+    catSelect.value = divisi;
+  }
+
+  // 4. Isi Data Lainnya
+  document.getElementById('catRowIndex').value = rowIndex;
+  document.getElementById('catNama').value = kategori;
+  document.getElementById('catAktif').value = aktif;
+  document.getElementById('catInaktif').value = inaktif;
+  document.getElementById('catKet').value = ket;
+  
+  document.getElementById('categoryModalTitle').innerText = "Edit Kategori";
+  
+  const modalEl = document.getElementById('categoryModal');
+  categoryModalInstance = new bootstrap.Modal(modalEl);
+  categoryModalInstance.show();
+}
+
+    function deleteCategory(rowIndex) {
+      Swal.fire({
+        title: 'Hapus Kategori?', text: "Data terkait mungkin terdampak.", icon: 'warning',
+        showCancelButton: true, confirmButtonText: 'Ya, Hapus'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          google.script.run.withSuccessHandler(() => {
+            loadCategories();
+            Swal.fire('Terhapus', 'Kategori dihapus.', 'success');
+          }).withFailureHandler(onError).deleteCategory(rowIndex);
+        }
+      });
+    }
+
+    function closeModalCatAndRefresh() {
+      categoryModalInstance.hide();
+      loadCategories();
+    }
+
+    let userModalInstance;
+    function loadUsers() {
+  google.script.run
+    .withSuccessHandler(data => {
+      const tbody = document.getElementById('userTableBody');
+      tbody.innerHTML = "";
+      
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center">Belum ada data user.</td></tr>`;
+        return;
+      }
+
+      data.forEach(item => {
+        const divNameMap = {
+            "ArsipMasuk": "Surat Masuk",
+            "ArsipKeluar": "Surat Keluar",
+            "ArsipFoto": "Dokumentasi Foto",
+            "ArsipKKPR": "Dokumen KKPR",
+            "ArsipAdministrasi": "Surat Tugas"
+        };
+        const divisiDisplay = item.divisi ? (divNameMap[item.divisi] || item.divisi) : "-";
+
+        const row = `
+          <tr>
+            <td class="fw-bold">${item.nama}</td>
+            <td>${item.username}</td>
+            <td><span class="badge bg-secondary">${item.role}</span></td>
+            <td><span class="badge bg-info text-white">${divisiDisplay}</span></td>
+            <td>
+              <button class="btn btn-sm btn-primary" onclick="editUser(${item.rowIndex}, '${item.nama}', '${item.username}', '${item.role}', '${item.divisi}')">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="deleteUser(${item.rowIndex})">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    })
+    .withFailureHandler(onError) 
+    .getUsers(); 
+}
+
+    function openUserModal() {
+      document.getElementById('userRowIndex').value = "";
+      document.getElementById('userForm').reset();
+      document.getElementById('userModalTitle').innerText = "Tambah Pengguna";
+      const modalEl = document.getElementById('userModal');
+      userModalInstance = new bootstrap.Modal(modalEl);
+      userModalInstance.show();
+    }
+
+    function editUser(rowIndex, nama, username, role, divisi) {
+  document.getElementById('userRowIndex').value = rowIndex;
+  document.getElementById('userNama').value = nama;
+  document.getElementById('userName').value = username;
+  document.getElementById('userRole').value = role;
+  document.getElementById('userPass').value = ""; 
+  document.getElementById('userPass').placeholder = "(Isi jika ingin ganti password)";
+  
+  document.getElementById('userDivisi').value = divisi || "";
+  
+  document.getElementById('userModalTitle').innerText = "Edit Pengguna";
+  
+  const modalEl = document.getElementById('userModal');
+  userModalInstance = new bootstrap.Modal(modalEl);
+  userModalInstance.show();
+}
+
+    document.getElementById('userForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const data = {
+    nama: document.getElementById('userNama').value,
+    username: document.getElementById('userName').value,
+    password: document.getElementById('userPass').value,
+    role: document.getElementById('userRole').value,
+    divisi: document.getElementById('userDivisi').value
+  };
+  
+  const rowIndex = document.getElementById('userRowIndex').value;
+  
+  if (!rowIndex && !data.password) {
+    Swal.fire('Error', 'Password harus diisi untuk user baru.', 'error');
+    return;
+  }
+
+  Swal.fire({title: 'Menyimpan...', didOpen: () => Swal.showLoading()});
+  
+  if (rowIndex) {
+    google.script.run.withSuccessHandler(() => {
+      closeModalUserAndRefresh();
+      Swal.fire('Sukses', 'Data user diperbarui', 'success');
+    }).withFailureHandler(onError).updateUser(rowIndex, data);
+  } else {
+    google.script.run.withSuccessHandler(() => {
+      closeModalUserAndRefresh();
+      Swal.fire('Sukses', 'User baru ditambahkan', 'success');
+    }).withFailureHandler(onError).addUser(data);
+  }
+});
+
+// === PERBAIKAN BUG: Handler untuk Form Kategori ===
+document.getElementById('categoryForm').addEventListener('submit', function(e) {
+  e.preventDefault(); // MENCEGAH RELOAD HALAMAN (Penyebab Layar Putih)
+
+  // Ambil data dari input
+  const rowIndex = document.getElementById('catRowIndex').value; 
+  const data = {
+    divisi: document.getElementById('catDivisi').value,
+    kategori: document.getElementById('catNama').value,
+    aktif: document.getElementById('catAktif').value,
+    inaktif: document.getElementById('catInaktif').value,
+    keterangan: document.getElementById('catKet').value
+  };
+
+  // Validasi sederhana
+  if (!data.divisi || !data.kategori) {
+    Swal.fire('Error', 'Divisi dan Nama Kategori wajib diisi!', 'error');
+    return;
+  }
+
+  // Tampilkan loading
+  Swal.fire({
+    title: 'Menyimpan...',
+    didOpen: () => Swal.showLoading()
+  });
+
+  if (rowIndex) {
+    // --- MODE EDIT KATEGORI ---
+    google.script.run
+      .withSuccessHandler(() => {
+        closeModalCatAndRefresh();
+        Swal.fire('Sukses', 'Kategori berhasil diperbarui.', 'success');
+      })
+      .withFailureHandler(onError)
+      .updateCategory(rowIndex, data);
+  } else {
+    // --- MODE TAMBAH KATEGORI BARU ---
+    google.script.run
+      .withSuccessHandler(() => {
+        closeModalCatAndRefresh();
+        Swal.fire('Sukses', 'Kategori berhasil ditambahkan.', 'success');
+      })
+      .withFailureHandler(onError)
+      .addCategory(data);
+  }
+});
+
+    function deleteUser(rowIndex) {
+      Swal.fire({
+        title: 'Hapus User?', text: "User tidak bisa login lagi.", icon: 'warning',
+        showCancelButton: true, confirmButtonText: 'Ya, Hapus'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          google.script.run.withSuccessHandler(() => {
+            loadUsers();
+            Swal.fire('Terhapus', 'User dihapus.', 'success');
+          }).withFailureHandler(onError).deleteUser(rowIndex);
+        }
+      });
+    }
+
+    function closeModalUserAndRefresh() {
+      userModalInstance.hide();
+      loadUsers();
+    }
+
+    function onError(error) {
+      Swal.close();
+      console.error(error);
+      Swal.fire('Error Server', error.message, 'error');
+    }
+
+    function openEditModal(id) {
+  Swal.fire({title: 'Memuat Data...', didOpen: () => Swal.showLoading()});
+  
+  google.script.run.withSuccessHandler(allData => {
+    const item = allData.find(x => x.id == id);
+    Swal.close();
+
+    if (!item) {
+      Swal.fire('Error', 'Data tidak ditemukan', 'error');
+      return;
+    }
+
+    document.getElementById('editId').value = item.id;
+    document.getElementById('editDivisi').value = item.divisi;
+    document.getElementById('editDivisiDisplay').value = item.divisi;
+    document.getElementById('editKategori').value = item.kategori; 
+    
+    document.getElementById('editKode').value = item.kode;
+    document.getElementById('editNama').value = item.nama;
+    document.getElementById('editJenisFile').value = item.jenisFile;
+    document.getElementById('editKeterangan').value = item.keterangan;
+
+    selectedEditFileBase64 = null;
+    selectedEditFileName = null;
+    document.getElementById('previewEdit').innerHTML = `File saat ini: <span class="badge bg-info">${item.jenisFile}</span>`;
+    document.getElementById('drop-area-edit').style.borderColor = "#ccc";
+
+    const modalEl = document.getElementById('editArchiveModal');
+    editModalInstance = new bootstrap.Modal(modalEl);
+    editModalInstance.show();
+    
+  }).getArchives({search: "", divisi: "All", userRole: "Super Admin"}); // Fetch all for edit lookup
+}
+
+function handleEditFiles(files) {
+  if (files.length === 0) return;
+  const file = files[0];
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onloadend = function() {
+    selectedEditFileBase64 = reader.result;
+    selectedEditFileName = file.name;
+    document.getElementById('previewEdit').innerHTML = `<i class="fas fa-check-circle"></i> File baru: <strong>${file.name}</strong>`;
+    document.getElementById('drop-area-edit').style.borderColor = "var(--primary-color)";
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const dropAreaEdit = document.getElementById('drop-area-edit');
+  const fileElemEdit = document.getElementById('fileElemEdit');
+
+  if(dropAreaEdit && fileElemEdit) {
+    dropAreaEdit.addEventListener('click', () => fileElemEdit.click());
+    dropAreaEdit.addEventListener('dragover', (e) => { 
+      e.preventDefault(); 
+      dropAreaEdit.classList.add('highlight'); 
+    });
+    dropAreaEdit.addEventListener('dragleave', () => { 
+      dropAreaEdit.classList.remove('highlight'); 
+    });
+    dropAreaEdit.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropAreaEdit.classList.remove('highlight');
+      handleEditFiles(e.dataTransfer.files);
+    });
+  }
+});
+
+document.getElementById('editArchiveForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const id = document.getElementById('editId').value;
+  
+  const updateData = {
+    id: id, 
+    nama: document.getElementById('editNama').value,
+    kategori: document.getElementById('editKategori').value, 
+    divisi: document.getElementById('editDivisi').value,
+    keterangan: document.getElementById('editKeterangan').value,
+    fileType: document.getElementById('editJenisFile').value,
+    fileData: selectedEditFileBase64, 
+    fileName: selectedEditFileName,
+    userName: currentUser.name
+  };
+
+  Swal.fire({title: 'Mengupdate...', didOpen: () => Swal.showLoading()});
+  
+  google.script.run
+    .withSuccessHandler(() => {
+      Swal.close();
+      editModalInstance.hide();
+      Swal.fire('Berhasil', 'Data arsip berhasil diperbarui.', 'success');
+      loadArchives();
+    })
+    .withFailureHandler(onError)
+    .editArchive(id, updateData);
+});
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  
+  sidebar.classList.toggle('show');
+  overlay.classList.toggle('show');
+}
+
+function closeSidebarMobile() {
+  if (window.innerWidth < 768) {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    sidebar.classList.remove('show');
+    overlay.classList.remove('show');
+  }
+}
+
+function updatePaginationControls(totalItems) {
+  const totalPages = Math.ceil(totalItems / rowsPerPage);
+  const startItem = totalItems === 0 ? 0 : (currentPage - 1) * rowsPerPage + 1;
+  const endItem = Math.min(currentPage * rowsPerPage, totalItems);
+  
+  document.getElementById('paginationInfo').innerText = `Menampilkan ${startItem} - ${endItem} dari ${totalItems} data`;
+  
+  const prevBtn = document.getElementById('prevBtn');
+  prevBtn.disabled = (currentPage === 1);
+  prevBtn.classList.toggle('disabled', (currentPage === 1));
+  
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.disabled = (currentPage >= totalPages || totalItems === 0);
+  nextBtn.classList.toggle('disabled', (currentPage >= totalPages || totalItems === 0));
+}
+
+function changePage(action) {
+  const totalPages = Math.ceil(filteredArchiveData.length / rowsPerPage);
+  
+  if (action === 'prev' && currentPage > 1) {
+    currentPage--;
+  } else if (action === 'next' && currentPage < totalPages) {
+    currentPage++;
+  }
+  renderArchiveTable();
+}
+
+function changeRowsPerPage(val) {
+  rowsPerPage = parseInt(val);
+  currentPage = 1;
+  renderArchiveTable();
+}
+
+function renderCategoryTable() {
+  const tbody = document.getElementById('categoryTableBody');
+  tbody.innerHTML = "";
+  
+  if (categoryData.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center">Belum ada kategori untuk divisi Anda</td></tr>`;
+    updateCatPaginationControls(0);
+    return;
+  }
+
+  const startIndex = (catCurrentPage - 1) * catRowsPerPage;
+  const endIndex = startIndex + catRowsPerPage;
+  const pageData = categoryData.slice(startIndex, endIndex);
+
+  pageData.forEach(item => {
+    const row = `
+      <tr>
+        <td>${item.divisi}</td>
+        <td>${item.kategori}</td>
+        <td>${item.retensiAktif} Tahun</td>
+        <td>${item.retensiInaktif} Tahun</td>
+        <td>${item.keterangan}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" onclick="editCategory(${item.rowIndex}, '${item.divisi}', '${item.kategori}', ${item.retensiAktif}, ${item.retensiInaktif}, '${item.keterangan}')">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-danger" onclick="deleteCategory(${item.rowIndex})">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    `;
+    tbody.innerHTML += row;
+  });
+
+  updateCatPaginationControls(categoryData.length);
+}
+
+function updateCatPaginationControls(totalItems) {
+  const totalPages = Math.ceil(totalItems / catRowsPerPage);
+  const startItem = totalItems === 0 ? 0 : (catCurrentPage - 1) * catRowsPerPage + 1;
+  const endItem = Math.min(catCurrentPage * catRowsPerPage, totalItems);
+  
+  document.getElementById('catPaginationInfo').innerText = `Menampilkan ${startItem} - ${endItem} dari ${totalItems} data`;
+  
+  const prevBtn = document.getElementById('catPrevBtn');
+  prevBtn.disabled = (catCurrentPage === 1);
+  prevBtn.classList.toggle('disabled', (catCurrentPage === 1));
+  
+  const nextBtn = document.getElementById('catNextBtn');
+  nextBtn.disabled = (catCurrentPage >= totalPages || totalItems === 0);
+  nextBtn.classList.toggle('disabled', (catCurrentPage >= totalPages || totalItems === 0));
+}
+
+function changeCatPage(action) {
+  const totalPages = Math.ceil(categoryData.length / catRowsPerPage);
+  
+  if (action === 'prev' && catCurrentPage > 1) {
+    catCurrentPage--;
+  } else if (action === 'next' && catCurrentPage < totalPages) {
+    catCurrentPage++;
+  }
+  renderCategoryTable();
+}
+
+function changeCatRowsPerPage(val) {
+  catRowsPerPage = parseInt(val);
+  catCurrentPage = 1;
+  renderCategoryTable();
+}
+  </script>
+  <button class="floating-btn" onclick="showSection('input')">
+  <i class="fas fa-plus"></i>
+</button>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+    .then(() => console.log('Service Worker aktif'))
+    .catch(err => console.log('SW gagal:', err));
+}
+</script>
+<button id="installBtn" class="btn btn-success d-none">
+  📲 Install Aplikasi
+</button>
+
+</body>
+</html>
